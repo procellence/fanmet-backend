@@ -1,0 +1,14 @@
+# TypeScript v1 declaration files
+typings/
+
+# Node.js dependency directory
+node_modules/
+db-data/
+seed/
+*.log
+
+lib/
+coverage/
+junit.xml
+
+.env*

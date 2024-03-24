@@ -1,0 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`mergeObjectsWithAddition should handle mixed data types 1`] = `
+{
+  "a": 3,
+  "b": "helloworld",
+  "c": {
+    "d": 3,
+    "e": 4,
+  },
+}
+`;
+
+exports[`mergeObjectsWithAddition should handle nested objects 1`] = `
+{
+  "a": {
+    "b": 3,
+    "c": 3,
+  },
+}
+`;
+
+exports[`mergeObjectsWithAddition should handle objects with no overlapping keys 1`] = `
+{
+  "a": 1,
+  "b": 2,
+}
+`;
+
+exports[`mergeObjectsWithAddition should handle objects with overlapping keys but non-number values 1`] = `
+{
+  "a": "helloworld",
+}
+`;
+
+exports[`mergeObjectsWithAddition should handle one empty object 1`] = `
+{
+  "a": 1,
+}
+`;
+
+exports[`mergeObjectsWithAddition should handle overlapping number keys 1`] = `
+{
+  "a": 3,
+}
+`;
+
+exports[`mergeObjectsWithAddition should handle two empty objects 1`] = `{}`;

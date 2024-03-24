@@ -1,0 +1,7 @@
+{
+  "projects": {
+    "default": "fuelerp-dev",
+    "dev": "fuelerp-dev",
+    "prod": "fuelerp"
+  }
+}

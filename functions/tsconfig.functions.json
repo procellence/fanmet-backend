@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "types": [
+      "node"
+    ]
+  },
+  "exclude": [
+    "../shared/**/*.spec.ts",
+    "src/**/*.spec.ts",
+    "src/setupJest.ts",
+    "src/testing/**/"
+  ]
+}
