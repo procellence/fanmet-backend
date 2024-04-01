@@ -9,8 +9,6 @@ import admin from 'firebase-admin';
 export const FIREBASE_PROJECT_ID = process.env.GCLOUD_PROJECT;
 export const FIREBASE_TEST_PROJECT_ID = 'not-a-project';
 
-export const DEFAULT_BUCKET = `${FIREBASE_PROJECT_ID}.appspot.com`;
-
 admin.initializeApp({
   projectId: FIREBASE_PROJECT_ID,
   storageBucket: `${FIREBASE_PROJECT_ID}.appspot.com`,
