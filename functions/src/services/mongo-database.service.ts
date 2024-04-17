@@ -8,9 +8,6 @@ export class MongoDatabaseService {
   private static db: Db;
   private static isConnected = false;
 
-  constructor() {
-  }
-
   static async connect() {
     if (this.isConnected) {
       return;

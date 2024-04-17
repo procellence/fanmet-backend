@@ -4,15 +4,20 @@ import { Service } from 'typedi';
 import { APP_CERTIFICATE, APP_ID } from '../../constants';
 import { AgoraRtcRole, AgoraTokenRequest } from '../../models/agora';
 import { CallableRequest } from 'firebase-functions/lib/common/providers/https';
+import { LoggerService } from '../../services/logger.service';
 
 const HttpsError = https.HttpsError;
 
 @Service()
 export default class AgoraTokenGeneratorFunction {
 
+  private readonly logger = LoggerService.getLogger(this);
+
   private readonly UID = 0;
 
   async main(req: CallableRequest<AgoraTokenRequest>) {
+
+    this.logger.info('Request received', req.data);
 
     const { channelName, role, keepAliveInSeconds } = req.data;
 
@@ -33,7 +38,7 @@ export default class AgoraTokenGeneratorFunction {
       throw new HttpsError('invalid-argument', e.message);
     }
 
-    await this.generateAccessToken(channelName, rtcRole, keepAlive);
+    return await this.generateAccessToken(channelName, rtcRole, keepAlive);
   }
 
   async generateAccessToken(channelName: string, role: number, expireTimeInSeconds: number) {
