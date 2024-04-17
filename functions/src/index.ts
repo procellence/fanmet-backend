@@ -12,3 +12,8 @@ export const getAgoraToken = onCall(
   async (request) => {
     return loadFn(() => import('./functions/agora-token-generator/agora-token-generator.function'))(request);
   });
+
+export const followUser = onCall(
+  async (request) => {
+    return loadFn(() => import('./functions/follow-user/follow-user.function'))(request);
+  });

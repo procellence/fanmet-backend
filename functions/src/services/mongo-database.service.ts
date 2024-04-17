@@ -21,6 +21,10 @@ export class MongoDatabaseService {
     return this.db;
   }
 
+  static getClient(): MongoClient {
+    return this.client;
+  }
+
   static isDbConnected(): boolean {
     return this.isConnected;
   }
