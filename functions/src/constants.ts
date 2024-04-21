@@ -7,3 +7,5 @@ export const MONGODB_DB_NAME = 'fanmet';
 export const APP_ID: string = '48935d1f70ac4463abbb87c17e7f577c';
 
 export const APP_CERTIFICATE: string = '6f07907b28b844cebc2c53e83548536f';
+
+export const DEFAULT_BUCKET = 'fanmet-dev';

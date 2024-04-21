@@ -39,6 +39,6 @@ export abstract class BaseDao<T> {
     return response.acknowledged;
   }
 
-  private getCollection = () => this.db.collection(this.collectionName);
+  protected getCollection = () => this.db.collection(this.collectionName);
 
 }

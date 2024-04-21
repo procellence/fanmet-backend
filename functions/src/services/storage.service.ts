@@ -4,16 +4,20 @@ import { v4 } from 'uuid';
 import { CreateOptions } from '@google-cloud/storage/build/src/nodejs-common/service-object';
 import { File } from '@google-cloud/storage';
 import { DateTime } from 'luxon';
-import { app, DEFAULT_BUCKET } from '../providers/firebase';
+import { app } from '../providers/firebase';
+import { DEFAULT_BUCKET } from '../constants';
 
 @Service()
 export class StorageService {
+
+  private readonly storage = app.storage();
+
   public async uploadFile(fileName: string, fileData: Buffer, contentType: string, bucketName = DEFAULT_BUCKET): Promise<string> {
 
     const uuid = v4();
 
     return new Promise<string>((resolve, reject) => {
-      const bucket = app.storage().bucket(bucketName);
+      const bucket = this.storage.bucket(bucketName);
       const blobWriter = bucket.file(fileName).createWriteStream({
         metadata: {
           contentType,
@@ -37,8 +41,8 @@ export class StorageService {
   }
 
   public async moveFile(bucket: string, fileName: string, destinationBucket: string): Promise<void> {
-    const newBucket = app.storage().bucket(destinationBucket);
-    await app.storage().bucket(bucket).file(fileName)
+    const newBucket = this.storage.bucket(destinationBucket);
+    await this.storage.bucket(bucket).file(fileName)
       .move(newBucket);
     logger.log('StorageService.moveFile completed. File moved', {
       bucket,
@@ -49,7 +53,7 @@ export class StorageService {
 
   public async createBucket(bucketName: string, metadata?: CreateOptions, deleteRuleDaysCount: number = null): Promise<boolean> {
     logger.debug('createBucket function call', bucketName, metadata, deleteRuleDaysCount);
-    const bucket = app.storage().bucket(bucketName);
+    const bucket = this.storage.bucket(bucketName);
     const [exists] = await bucket.exists();
     if (exists) {
       return false;
@@ -66,7 +70,7 @@ export class StorageService {
   }
 
   async getFile(filepath: string, bucket = DEFAULT_BUCKET): Promise<File> {
-    return app.storage().bucket(bucket).file(filepath);
+    return this.storage.bucket(bucket).file(filepath);
   }
 
   async getSignedUrl(filepath: string, expiresInMinutes = 1, bucket = DEFAULT_BUCKET): Promise<string> {
@@ -83,6 +87,17 @@ export class StorageService {
     filepath: string,
     fileBuffer: Buffer,
   ): Promise<any> {
-    await app.storage().bucket(bucketName).file(filepath).save(fileBuffer);
+    await this.storage.bucket(bucketName).file(filepath).save(fileBuffer);
+  }
+
+  async moveFileFromDownloadUrl(url: string, destinationBucket: string, destinationPath: string): Promise<boolean> {
+    const file = this.storage.bucket().file(url);
+    const movedFile = await file.move(`${destinationBucket}/${destinationPath}`);
+    return movedFile.length === 1;
+  }
+
+  async deleteFile(existingPhotoUrl: string) {
+    const file = this.storage.bucket().file(existingPhotoUrl);
+    await file.delete();
   }
 }
