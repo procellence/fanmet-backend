@@ -16,6 +16,7 @@ export interface User extends ModelBase {
   gender: GENDER_TYPE;
   pictureUrl: string
   withdrawalOption?: WithdrawalOption;
+  fcmTokenId?: string
 }
 
 export interface WithdrawalOption {
