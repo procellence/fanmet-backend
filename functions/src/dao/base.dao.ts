@@ -1,20 +1,20 @@
 import { Service } from 'typedi';
 import { MongoDatabaseService } from '../services/mongo-database.service';
-import { ObjectId } from 'mongodb';
+import { DataObject } from '../utils/generic-types';
+import { Filter, ObjectId, OptionalUnlessRequiredId } from 'mongodb';
 
 
 @Service()
-export abstract class BaseDao<T> {
+export abstract class BaseDao<T = DataObject> {
 
   abstract collectionName: string;
 
   protected db = MongoDatabaseService.getDb();
 
   async getById(id: string) {
-    const response = await this.getCollection().findOne({
+    return this.getCollection().findOne({
       _id: ObjectId.createFromHexString(id),
-    });
-    return response as T;
+    } as Filter<T>);
   }
 
   async getAll(): Promise<T[]> {
@@ -23,7 +23,7 @@ export abstract class BaseDao<T> {
   }
 
   async create(data: T): Promise<string> {
-    const response = await this.getCollection().insertOne(data);
+    const response = await this.getCollection().insertOne(data as OptionalUnlessRequiredId<T>);
     return response.insertedId.id.toString();
   }
 
@@ -31,7 +31,7 @@ export abstract class BaseDao<T> {
     const response = await this.getCollection().updateOne(
       {
         _id: ObjectId.createFromHexString(id),
-      },
+      } as Filter<T>,
       {
         $set: data,
       },
@@ -39,6 +39,6 @@ export abstract class BaseDao<T> {
     return response.acknowledged;
   }
 
-  private getCollection = () => this.db.collection(this.collectionName);
+  protected getCollection = () => this.db.collection<T>(this.collectionName);
 
 }

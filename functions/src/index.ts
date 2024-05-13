@@ -17,3 +17,5 @@ export const followUser = onCall(
   async (request) => {
     return loadFn(() => import('./functions/follow-user/follow-user.function'))(request);
   });
+
+export const posts = require('./functions/posts');
