@@ -26,7 +26,7 @@ export default class UpdatePostFunction {
   private async validateRequest(userId: string): Promise<void> {
 
     if (!userId) {
-      throw new HttpsError('not-found', 'userId id is required');
+      throw new HttpsError('not-found', 'post id is required');
     }
 
     const isPostIdExist = await this.postsDao.isPostIdExist(userId);

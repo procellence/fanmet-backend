@@ -26,10 +26,10 @@ export default class UpdateCallDetailsByIdFunction {
   private async validateRequest(id: string): Promise<void> {
 
     if (!id) {
-      throw new HttpsError('not-found', 'id is required');
+      throw new HttpsError('not-found', 'call details id is required');
     }
 
-    const isCallDetailsId = await this.callDao.isUserIdExist(id);
+    const isCallDetailsId = await this.callDao.isCallDetailsIdExist(id);
 
     if (!isCallDetailsId) {
       throw new HttpsError('not-found', 'sorry call details not found');

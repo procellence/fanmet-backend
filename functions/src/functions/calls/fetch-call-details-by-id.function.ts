@@ -3,7 +3,7 @@ import { LoggerService } from '../../services/logger.service';
 import { CallableRequest } from 'firebase-functions/lib/common/providers/https';
 import { https } from 'firebase-functions/lib/v2';
 import { CallDao } from '../../dao/call.dao';
-import { AddNewCallRequest } from '../../models/requests/call-request';
+import { FetchCallDetailsRequest } from '../../models/requests/call-request';
 import { Call } from '../../models/call';
 
 const HttpsError = https.HttpsError;
@@ -17,7 +17,7 @@ export default class FetchCallDetailsByIdFunction {
   ) {
   }
 
-  async main(req: CallableRequest<AddNewCallRequest>): Promise<Call[]> {
+  async main(req: CallableRequest<FetchCallDetailsRequest>): Promise<Call[]> {
     const callRequest = req.data;
     this.logger.info('Request received', callRequest);
     await this.validateRequest(callRequest.fromUserId, callRequest.toUserId);

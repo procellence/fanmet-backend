@@ -29,7 +29,7 @@ export default class FetchTransactionsFunction {
   private validateRequest(request: FetchTransactionsRequest): void {
 
     if (!request.userId) {
-      throw new HttpsError('not-found', 'user id is required');
+      throw new HttpsError('not-found', 'transaction id is required');
     }
   }
 }

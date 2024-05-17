@@ -29,7 +29,7 @@ export default class AddNewTransactionsFunction {
   private validateRequest(userId: string): void {
 
     if (!userId) {
-      throw new HttpsError('not-found', 'user id is required');
+      throw new HttpsError('not-found', 'transaction id is required');
     }
   }
 }

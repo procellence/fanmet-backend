@@ -16,7 +16,7 @@ export class CallDao extends BaseDao<Call> {
     }).toArray();
   }
 
-  async isUserIdExist(id: string): Promise<boolean> {
+  async isCallDetailsIdExist(id: string): Promise<boolean> {
     const result = await this.getCollection().find({ id: id }).toArray();
     return result.length != 0;
   }

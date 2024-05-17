@@ -26,7 +26,7 @@ export default class AddNewCallFunction {
   private async validateRequest(fromUserId: string, toUserId: string): Promise<void> {
 
     if (!fromUserId || !toUserId) {
-      throw new HttpsError('not-found', 'id is required');
+      throw new HttpsError('not-found', 'call details id is required');
     }
 
   }
