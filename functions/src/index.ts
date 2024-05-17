@@ -19,3 +19,9 @@ export const followUser = onCall(
   });
 
 export const posts = require('./functions/posts');
+
+export const transactions = require('./functions/transactions');
+
+export const users = require('./functions/users');
+
+export const calls = require('./functions/calls');

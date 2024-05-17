@@ -27,7 +27,7 @@ export abstract class BaseDao<T = DataObject> {
     return response.insertedId.id.toString();
   }
 
-  async update(id: string, data: T): Promise<boolean> {
+  async update(id: string, data: Partial<T>): Promise<boolean> {
     const response = await this.getCollection().updateOne(
       {
         _id: ObjectId.createFromHexString(id),
@@ -35,6 +35,14 @@ export abstract class BaseDao<T = DataObject> {
       {
         $set: data,
       },
+    );
+    return response.acknowledged;
+  }
+
+  async delete(id: string): Promise<boolean> {
+    const response = await this.getCollection().deleteOne({
+        _id: ObjectId.createFromHexString(id),
+      } as Filter<T>,
     );
     return response.acknowledged;
   }

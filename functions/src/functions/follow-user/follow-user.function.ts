@@ -52,8 +52,8 @@ export default class FollowUserFunction {
     const db = client.db(MONGODB_DB_NAME);
 
     // 1. Add a record in the following collection if isFollowing is true or remove the record if isFollowing is false
-    // 2. Update the followers count in the user collection (followUserId)
-    // 3. Update the following count in the user collection (userId)
+    // 2. Update the followers count in the users collection (followUserId)
+    // 3. Update the following count in the users collection (userId)
 
     if (isFollowing) {
       // Add a record in the following collection
@@ -70,7 +70,7 @@ export default class FollowUserFunction {
       });
 
       if (!record) {
-        throw new HttpsError('invalid-argument', 'User is not following the other user');
+        throw new HttpsError('invalid-argument', 'User is not following the other users');
       }
 
       // Remove the record from the following collection
@@ -80,13 +80,13 @@ export default class FollowUserFunction {
       });
     }
 
-    // Update the followers count in the user collection (followedId)
+    // Update the followers count in the users collection (followedId)
     await db.collection(USERS_COLLECTION).updateOne(
       { _id: ObjectId.createFromHexString(followedId) },
       { $inc: { followers: isFollowing ? 1 : -1 } },
     );
 
-    // Update the following count in the user collection (followerId)
+    // Update the following count in the users collection (followerId)
     await db.collection(USERS_COLLECTION).updateOne(
       { _id: ObjectId.createFromHexString(followerId) },
       { $inc: { following: isFollowing ? 1 : -1 } },
