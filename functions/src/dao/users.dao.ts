@@ -12,7 +12,7 @@ export class UsersDao extends BaseDao<User> {
     return this.getCollection().find({ email: email }).toArray();
   }
 
-  async isUserExist(email: string): Promise<boolean> {
+  async isUserEmailIdExist(email: string): Promise<boolean> {
     const result = await this.getCollection().find({ email: email }).toArray();
     return result.length != 0;
   }
@@ -22,7 +22,4 @@ export class UsersDao extends BaseDao<User> {
     return result.length != 0;
   }
 
-  async fetchAllUser(): Promise<User[]> {
-    return this.getCollection().find().toArray();
-  }
 }

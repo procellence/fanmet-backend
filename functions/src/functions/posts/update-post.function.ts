@@ -29,9 +29,9 @@ export default class UpdatePostFunction {
       throw new HttpsError('not-found', 'userId id is required');
     }
 
-    const isUserIdExist = await this.postsDao.isUserIdExist(userId);
+    const isPostIdExist = await this.postsDao.isPostIdExist(userId);
 
-    if (!isUserIdExist) {
+    if (!isPostIdExist) {
       throw new HttpsError('not-found', 'no post found for update');
     }
   }

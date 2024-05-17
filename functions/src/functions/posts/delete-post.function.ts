@@ -26,12 +26,12 @@ export default class DeletePostFunction {
   private async validateRequest(userId: string): Promise<void> {
 
     if (!userId) {
-      throw new HttpsError('not-found', 'userId id is required');
+      throw new HttpsError('not-found', 'user id is required');
     }
 
-    const isUserIdExist = await this.postsDao.isUserIdExist(userId);
+    const deletePostId = await this.postsDao.isPostIdExist(userId);
 
-    if (!isUserIdExist) {
+    if (!deletePostId) {
       throw new HttpsError('not-found', 'no post found for delete');
     }
   }

@@ -29,10 +29,11 @@ export default class UpdateCallDetailsByIdFunction {
       throw new HttpsError('not-found', 'id is required');
     }
 
-    const isIdExist = await this.callDao.isUserIdExist(id);
+    const isCallDetailsId = await this.callDao.isUserIdExist(id);
 
-    if (!isIdExist) {
+    if (!isCallDetailsId) {
       throw new HttpsError('not-found', 'sorry call details not found');
     }
   }
 }
+

@@ -29,7 +29,7 @@ export default class FetchPostByUserIdFunction {
   private validateRequest(request: FetchPostByUserIdRequest): void {
 
     if (!request.userId) {
-      throw new HttpsError('not-found', 'userId is required');
+      throw new HttpsError('not-found', 'user id is required');
     }
   }
 }

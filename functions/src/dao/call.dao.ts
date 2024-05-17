@@ -8,7 +8,12 @@ export class CallDao extends BaseDao<Call> {
   collectionName = CALLS_COLLECTION;
 
   async fetchCallDetailById(fromUserId: string, toUserId: string): Promise<Call[]> {
-    return this.getCollection().find({ fromUserId: fromUserId, toUserId: toUserId }).toArray();
+    return this.getCollection().find({
+      $or: [
+        { fromUserId: fromUserId },
+        { toUserId: toUserId },
+      ],
+    }).toArray();
   }
 
   async isUserIdExist(id: string): Promise<boolean> {

@@ -11,7 +11,7 @@ export class PostsDao extends BaseDao<Post> {
     return this.getCollection().find({ userId }).toArray();
   }
 
-  async isUserIdExist(userId: string): Promise<boolean> {
+  async isPostIdExist(userId: string): Promise<boolean> {
     const result = await this.getCollection().find({ id: userId }).toArray();
     return result.length != 0;
   }

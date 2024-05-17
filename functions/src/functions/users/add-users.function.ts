@@ -29,8 +29,8 @@ export default class AddUserFunction {
       throw new HttpsError('not-found', 'email id is required');
     }
 
-    const isUserExist = await this.userDao.isUserExist(email);
-    if (isUserExist) {
+    const isUserEmailIdExist = await this.userDao.isUserEmailIdExist(email);
+    if (isUserEmailIdExist) {
       throw new HttpsError('already-exists', 'email is already exit');
     }
   }

@@ -29,7 +29,7 @@ export default class AddNewPostFunction {
   private validateRequest(userId: string): void {
 
     if (!userId) {
-      throw new HttpsError('not-found', 'userId is required');
+      throw new HttpsError('not-found', 'post id is required');
     }
   }
 }

@@ -17,6 +17,6 @@ export default class FetchAllUserFunction {
   async main(req: CallableRequest<FetchAllUserRequest>): Promise<User[]> {
     const userRequest = req.data;
     this.logger.info('Request received', userRequest);
-    return this.userDao.fetchAllUser();
+    return this.userDao.getAll();
   }
 }

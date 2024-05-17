@@ -27,7 +27,7 @@ export default class FetchCallDetailsByIdFunction {
   private async validateRequest(fromUserId: string, toUserId: string): Promise<void> {
 
     if (!fromUserId || !toUserId) {
-      throw new HttpsError('not-found', 'fromUserId or toUserId id is required');
+      throw new HttpsError('not-found', 'no call details found');
     }
 
   }
