@@ -17,13 +17,13 @@ export default class FetchUserByEmailFunction {
   ) {
   }
 
-  async main(req: CallableRequest<FetchUserByEmailRequest>): Promise<User[]> {
+  async main(req: CallableRequest<FetchUserByEmailRequest>): Promise<User> {
     const userRequest = req.data;
     this.logger.info('Request received', userRequest);
 
     await this.validateRequest(userRequest.email);
 
-    return this.usersDao.fetchUserById(userRequest.email);
+    return this.usersDao.getByEmail(userRequest.email);
   }
 
   private async validateRequest(email: string): Promise<void> {

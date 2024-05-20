@@ -1,7 +1,8 @@
 import { Post } from '../post';
 
 export interface FetchPostsRequest {
-  postId: string;
+  postId?: string;
+  userId?: string;
 }
 
 export interface AddPostRequest extends Omit<Post, 'id'> {

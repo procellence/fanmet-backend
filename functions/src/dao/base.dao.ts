@@ -1,7 +1,7 @@
 import { Service } from 'typedi';
 import { MongoDatabaseService } from '../services/mongo-database.service';
 import { DataObject } from '../utils/generic-types';
-import { Filter, ObjectId, OptionalUnlessRequiredId } from 'mongodb';
+import { Filter, ObjectId, OptionalUnlessRequiredId, WithId } from 'mongodb';
 
 
 @Service()
@@ -11,15 +11,38 @@ export abstract class BaseDao<T = DataObject> {
 
   protected db = MongoDatabaseService.getDb();
 
-  async getById(id: string) {
-    return this.getCollection().findOne({
+  protected static convertToEntity<T>(item: WithId<T>) {
+    const id = item._id.toHexString();
+    delete item._id;
+    return {
+      ...item,
+      id,
+    } as T;
+  }
+
+  protected static convertToEntities<T>(items: WithId<T>[]) {
+    return items.map((item) => BaseDao.convertToEntity(item));
+  }
+
+  protected static convertFromEntity<T>(item: T & { id: string }): WithId<T> {
+    const id = item.id;
+    delete item.id;
+    return {
+      ...item,
+      _id: ObjectId.createFromHexString(id),
+    } as WithId<T>;
+  }
+
+  async getById(id: string): Promise<T> {
+    const response = await this.getCollection().findOne({
       _id: ObjectId.createFromHexString(id),
     } as Filter<T>);
+    return response ? BaseDao.convertToEntity(response) : null;
   }
 
   async getAll(): Promise<T[]> {
     const response = await this.getCollection().find().toArray();
-    return response.map((item) => item as T);
+    return BaseDao.convertToEntities(response);
   }
 
   async create(data: T): Promise<string> {
@@ -45,6 +68,13 @@ export abstract class BaseDao<T = DataObject> {
       } as Filter<T>,
     );
     return response.acknowledged;
+  }
+
+  async isExist(id: string): Promise<boolean> {
+    const result = await this.getCollection().find({
+      _id: ObjectId.createFromHexString(id),
+    } as Filter<T>).toArray();
+    return result.length != 0;
   }
 
   protected getCollection = () => this.db.collection<T>(this.collectionName);

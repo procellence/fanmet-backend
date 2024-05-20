@@ -2,7 +2,7 @@ import { Response } from 'express';
 import { sprintf } from 'sprintf-js';
 import { ZodError } from 'zod';
 import { LoggerService } from '../services/logger.service';
-import { https } from 'firebase-functions/lib/v2';
+import { Request } from 'firebase-functions/v2/https';
 import { ApiResponse } from '../models/api-response';
 import { BadRequestError } from '../errors/api-errors';
 
@@ -22,7 +22,7 @@ export abstract class DefaultApiHandler<R> {
   abstract parseRequest(data: R): R;
 
   validateRequestMethod(
-    req: https.Request,
+    req: Request,
     method: 'GET' | 'POST' | 'PUT',
   ): boolean {
     const reqMethod = req.method;
@@ -36,7 +36,7 @@ export abstract class DefaultApiHandler<R> {
   }
 
   validateContentType(
-    req: https.Request,
+    req: Request,
     contentType: string,
   ): boolean {
     const reqContentType = req.headers['content-type'];

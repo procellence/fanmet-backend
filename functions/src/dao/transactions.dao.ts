@@ -8,6 +8,7 @@ export class TransactionsDao extends BaseDao<Transaction> {
   collectionName = TRANSACTIONS_COLLECTION;
 
   async fetchById(userId: string): Promise<Transaction[]> {
-    return this.getCollection().find({ userId }).toArray();
+    const response = await this.getCollection().find({ userId }).toArray();
+    return BaseDao.convertToEntities(response);
   }
 }

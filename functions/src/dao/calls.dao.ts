@@ -12,9 +12,4 @@ export class CallsDao extends BaseDao<Call> {
       fromUserId: fromUserId,
     }).toArray();
   }
-
-  async isExist(id: string): Promise<boolean> {
-    const result = await this.getCollection().find({ id: id }).toArray();
-    return result.length != 0;
-  }
 }
