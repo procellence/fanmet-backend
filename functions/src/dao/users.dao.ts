@@ -8,16 +8,16 @@ export class UsersDao extends BaseDao<User> {
   collectionName = USERS_COLLECTION;
 
 
-  async fetchUserByUserEmailId(email: string): Promise<User[]> {
+  async fetchUserById(email: string): Promise<User[]> {
     return this.getCollection().find({ email: email }).toArray();
   }
 
-  async isUserEmailIdExist(email: string): Promise<boolean> {
+  async isEmailExist(email: string): Promise<boolean> {
     const result = await this.getCollection().find({ email: email }).toArray();
     return result.length != 0;
   }
 
-  async isUserIdExist(userId: string): Promise<boolean> {
+  async isExist(userId: string): Promise<boolean> {
     const result = await this.getCollection().find({ id: userId }).toArray();
     return result.length != 0;
   }

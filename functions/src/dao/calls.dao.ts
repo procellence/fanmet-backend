@@ -4,19 +4,16 @@ import { CALLS_COLLECTION } from '../collections';
 import { Call } from '../models/call';
 
 @Service()
-export class CallDao extends BaseDao<Call> {
+export class CallsDao extends BaseDao<Call> {
   collectionName = CALLS_COLLECTION;
 
-  async fetchCallDetailById(fromUserId: string, toUserId: string): Promise<Call[]> {
+  async fetchById(fromUserId: string): Promise<Call[]> {
     return this.getCollection().find({
-      $or: [
-        { fromUserId: fromUserId },
-        { toUserId: toUserId },
-      ],
+      fromUserId: fromUserId,
     }).toArray();
   }
 
-  async isCallDetailsIdExist(id: string): Promise<boolean> {
+  async isExist(id: string): Promise<boolean> {
     const result = await this.getCollection().find({ id: id }).toArray();
     return result.length != 0;
   }

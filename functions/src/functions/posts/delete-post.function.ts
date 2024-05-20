@@ -3,7 +3,7 @@ import { LoggerService } from '../../services/logger.service';
 import { CallableRequest } from 'firebase-functions/lib/common/providers/https';
 import { https } from 'firebase-functions/lib/v2';
 import { PostsDao } from '../../dao/posts.dao';
-import { DeletePostByUserIdRequest } from '../../models/requests/posts-request';
+import { DeletePostRequest } from '../../models/requests/post-requests';
 
 const HttpsError = https.HttpsError;
 
@@ -16,23 +16,23 @@ export default class DeletePostFunction {
   ) {
   }
 
-  async main(req: CallableRequest<DeletePostByUserIdRequest>): Promise<boolean> {
+  async main(req: CallableRequest<DeletePostRequest>): Promise<boolean> {
     const deleteRequest = req.data;
     this.logger.info('Request received', deleteRequest);
     await this.validateRequest(deleteRequest.id);
     return this.postsDao.delete(deleteRequest.id);
   }
 
-  private async validateRequest(userId: string): Promise<void> {
+  private async validateRequest(postId: string): Promise<void> {
 
-    if (!userId) {
-      throw new HttpsError('not-found', 'post id is required');
+    if (!postId) {
+      throw new HttpsError('not-found', 'Post id is required');
     }
 
-    const deletePostIdExist = await this.postsDao.isPostIdExist(userId);
+    const isPostIdExist = await this.postsDao.isExist(postId);
 
-    if (!deletePostIdExist) {
-      throw new HttpsError('not-found', 'no post found for delete');
+    if (!isPostIdExist) {
+      throw new HttpsError('not-found', 'No post found for delete');
     }
   }
 }

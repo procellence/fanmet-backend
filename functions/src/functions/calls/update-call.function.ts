@@ -2,17 +2,17 @@ import { Service } from 'typedi';
 import { LoggerService } from '../../services/logger.service';
 import { CallableRequest } from 'firebase-functions/lib/common/providers/https';
 import { https } from 'firebase-functions/lib/v2';
-import { CallDao } from '../../dao/call.dao';
-import { UpdateCallRequest } from '../../models/requests/call-request';
+import { CallsDao } from '../../dao/calls.dao';
+import { UpdateCallRequest } from '../../models/requests/call-requests';
 
 const HttpsError = https.HttpsError;
 
 @Service()
-export default class UpdateCallDetailsByIdFunction {
+export default class UpdateCallFunction {
   private readonly logger = LoggerService.getLogger(this);
 
   constructor(
-    private callDao: CallDao,
+    private callsDao: CallsDao,
   ) {
   }
 
@@ -20,7 +20,7 @@ export default class UpdateCallDetailsByIdFunction {
     const callRequest = req.data;
     this.logger.info('Request received', callRequest);
     await this.validateRequest(callRequest.id);
-    return this.callDao.update(callRequest.id, callRequest);
+    return this.callsDao.update(callRequest.id, callRequest);
   }
 
   private async validateRequest(id: string): Promise<void> {
@@ -29,10 +29,10 @@ export default class UpdateCallDetailsByIdFunction {
       throw new HttpsError('not-found', 'call details id is required');
     }
 
-    const isCallDetailsId = await this.callDao.isCallDetailsIdExist(id);
+    const isCallExist = await this.callsDao.isExist(id);
 
-    if (!isCallDetailsId) {
-      throw new HttpsError('not-found', 'sorry call details not found');
+    if (!isCallExist) {
+      throw new HttpsError('not-found', 'Call details not found');
     }
   }
 }

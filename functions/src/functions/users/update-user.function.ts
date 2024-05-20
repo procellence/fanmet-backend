@@ -2,7 +2,7 @@ import { Service } from 'typedi';
 import { LoggerService } from '../../services/logger.service';
 import { CallableRequest } from 'firebase-functions/lib/common/providers/https';
 import { UsersDao } from '../../dao/users.dao';
-import { UpdateUserRequest } from '../../models/requests/user-request';
+import { UpdateUserRequest } from '../../models/requests/user-requests';
 import { https } from 'firebase-functions/lib/v2';
 
 const HttpsError = https.HttpsError;
@@ -12,7 +12,7 @@ export default class UpdateUserFunction {
   private readonly logger = LoggerService.getLogger(this);
 
   constructor(
-    private userDao: UsersDao,
+    private usersDao: UsersDao,
   ) {
   }
 
@@ -20,18 +20,18 @@ export default class UpdateUserFunction {
     const userRequest = req.data;
     this.logger.info('Request received', userRequest);
     await this.validateRequest(userRequest.id);
-    return this.userDao.update(userRequest.id, userRequest);
+    return this.usersDao.update(userRequest.id, userRequest);
   }
 
   private async validateRequest(userId: string): Promise<void> {
 
     if (!userId) {
-      throw new HttpsError('not-found', 'email id is required');
+      throw new HttpsError('not-found', 'Email id is required');
     }
 
-    const isUserExist = await this.userDao.isUserIdExist(userId);
-    if (!isUserExist) {
-      throw new HttpsError('not-found', 'users id not exist in database');
+    const isIdExist = await this.usersDao.isExist(userId);
+    if (!isIdExist) {
+      throw new HttpsError('not-found', 'User id not exist in database');
     }
   }
 }

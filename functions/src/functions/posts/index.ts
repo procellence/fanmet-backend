@@ -1,14 +1,14 @@
 import { onCall } from 'firebase-functions/v2/https';
 import { loadFn } from '../../utils';
 
-export const fetchPostsByUserId = onCall(
+export const fetchPosts = onCall(
   async (request) => {
-    return loadFn(() => import('./fetch-post-by-user-id.function'))(request);
+    return loadFn(() => import('./fetch-post.function'))(request);
   });
 
-export const addNewPost = onCall(
+export const addPost = onCall(
   async (request) => {
-    return loadFn(() => import('./add-new-post.function'))(request);
+    return loadFn(() => import('./add-post.function'))(request);
   });
 
 export const updatePost = onCall(

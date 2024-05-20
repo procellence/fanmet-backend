@@ -2,31 +2,31 @@ import { Service } from 'typedi';
 import { LoggerService } from '../../services/logger.service';
 import { CallableRequest } from 'firebase-functions/lib/common/providers/https';
 import { https } from 'firebase-functions/lib/v2';
-import { CallDao } from '../../dao/call.dao';
-import { FetchCallDetailsRequest } from '../../models/requests/call-request';
+import { CallsDao } from '../../dao/calls.dao';
+import { FetchCallsRequest } from '../../models/requests/call-requests';
 import { Call } from '../../models/call';
 
 const HttpsError = https.HttpsError;
 
 @Service()
-export default class FetchCallDetailsByIdFunction {
+export default class FetchCallFunction {
   private readonly logger = LoggerService.getLogger(this);
 
   constructor(
-    private callDao: CallDao,
+    private callsDao: CallsDao,
   ) {
   }
 
-  async main(req: CallableRequest<FetchCallDetailsRequest>): Promise<Call[]> {
+  async main(req: CallableRequest<FetchCallsRequest>): Promise<Call[]> {
     const callRequest = req.data;
     this.logger.info('Request received', callRequest);
-    await this.validateRequest(callRequest.fromUserId, callRequest.toUserId);
-    return this.callDao.fetchCallDetailById(callRequest.fromUserId, callRequest.toUserId);
+    await this.validateRequest(callRequest.fromUserId);
+    return this.callsDao.fetchById(callRequest.fromUserId);
   }
 
-  private async validateRequest(fromUserId: string, toUserId: string): Promise<void> {
+  private async validateRequest(fromUserId: string): Promise<void> {
 
-    if (!fromUserId || !toUserId) {
+    if (!fromUserId) {
       throw new HttpsError('not-found', 'no call details found');
     }
 

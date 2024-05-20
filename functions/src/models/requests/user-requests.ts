@@ -10,6 +10,6 @@ export interface FetchUserByEmailRequest {
   email: string;
 }
 
-export interface FetchAllUserRequest extends User {
+export interface FetchUsersRequest extends User {
 }
 

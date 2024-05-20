@@ -2,13 +2,13 @@ import { Service } from 'typedi';
 import { LoggerService } from '../../services/logger.service';
 import { CallableRequest } from 'firebase-functions/lib/common/providers/https';
 import { https } from 'firebase-functions/lib/v2';
-import { TransactionsDao } from '../../dao/transaction.dao';
-import { AddTransactionRequest } from '../../models/requests/transaction-request';
+import { TransactionsDao } from '../../dao/transactions.dao';
+import { AddTransactionRequest } from '../../models/requests/transaction-requests';
 
 const HttpsError = https.HttpsError;
 
 @Service()
-export default class AddNewTransactionsFunction {
+export default class AddTransactionFunction {
   private readonly logger = LoggerService.getLogger(this);
 
   constructor(
@@ -26,9 +26,9 @@ export default class AddNewTransactionsFunction {
     return this.transactionsDao.create(transactionResponse);
   }
 
-  private validateRequest(userId: string): void {
+  private validateRequest(transactionId: string): void {
 
-    if (!userId) {
+    if (!transactionId) {
       throw new HttpsError('not-found', 'transaction id is required');
     }
   }

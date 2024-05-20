@@ -7,7 +7,7 @@ import { Transaction } from '../models/transaction';
 export class TransactionsDao extends BaseDao<Transaction> {
   collectionName = TRANSACTIONS_COLLECTION;
 
-  async fetchByUserId(userId: string): Promise<Transaction[]> {
+  async fetchById(userId: string): Promise<Transaction[]> {
     return this.getCollection().find({ userId }).toArray();
   }
 }
