@@ -2,10 +2,8 @@ import { Service } from 'typedi';
 import { LoggerService } from '../../services/logger.service';
 import { CallableRequest } from 'firebase-functions/lib/common/providers/https';
 import { AddPostRequest } from '../../models/requests/post-requests';
-import { https } from 'firebase-functions/lib/v2';
+import { HttpsError } from 'firebase-functions/v2/https';
 import { PostsDao } from '../../dao/posts.dao';
-
-const HttpsError = https.HttpsError;
 
 @Service()
 export default class AddPostFunction {
@@ -23,7 +21,7 @@ export default class AddPostFunction {
 
     this.validateRequest(postRepose.userId);
 
-    return this.postsDao.create(postRepose);
+    return this.postsDao.create({ ...postRepose, likes: 0 });
   }
 
   private validateRequest(postId: string): void {

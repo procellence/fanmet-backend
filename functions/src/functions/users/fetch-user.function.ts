@@ -1,9 +1,11 @@
 import { Service } from 'typedi';
 import { LoggerService } from '../../services/logger.service';
 import { CallableRequest } from 'firebase-functions/lib/common/providers/https';
+import { HttpsError } from 'firebase-functions/v2/https';
 import { UsersDao } from '../../dao/users.dao';
-import { FetchUsersRequest } from '../../models/requests/user-requests';
 import { User } from '../../models/user';
+import { FetchUserRequest } from '../../models/requests/user-requests';
+
 
 @Service()
 export default class FetchUserFunction {
@@ -14,9 +16,22 @@ export default class FetchUserFunction {
   ) {
   }
 
-  async main(req: CallableRequest<FetchUsersRequest>): Promise<User[]> {
+  async main(req: CallableRequest<FetchUserRequest>): Promise<User> {
     const userRequest = req.data;
     this.logger.info('Request received', userRequest);
-    return this.usersDao.getAll();
+
+    await this.validateRequest(userRequest);
+    if (userRequest.email) {
+      return this.usersDao.getByEmail(userRequest.email);
+    }
+    return this.usersDao.getById(userRequest.id);
+  }
+
+  private async validateRequest(request: FetchUserRequest): Promise<void> {
+
+    if (!request.email && !request.id) {
+      throw new HttpsError('not-found', 'No email id or  id found');
+    }
+
   }
 }

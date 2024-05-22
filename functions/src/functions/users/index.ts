@@ -12,9 +12,9 @@ export const updateUser = onCall(
     return loadFn(() => import('./add-user.function'))(request);
   });
 
-export const fetchUserByEmail = onCall(
+export const recommendUsers = onCall(
   async (request) => {
-    return loadFn(() => import('./fetch-user-by-email.function'))(request);
+    return loadFn(() => import('./recommend-user.function'))(request);
   });
 
 export const fetchUsers = onCall(

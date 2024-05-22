@@ -17,11 +17,14 @@ export default class FetchPostFunction {
   }
 
   async main(req: CallableRequest<FetchPostsRequest>): Promise<Post[]> {
-
-    this.logger.info('Request received', req.data);
+    const postsRequest = req.data;
+    this.logger.info('Request received', postsRequest);
 
     this.validateRequest(req.data);
+    if (postsRequest.userId) {
+      return this.postsDao.fetchPostByUserId(postsRequest.userId);
 
+    }
     return this.postsDao.getAll();
   }
 

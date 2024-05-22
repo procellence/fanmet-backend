@@ -6,10 +6,11 @@ export interface AddUserRequest extends Omit<User, 'id'> {
 export interface UpdateUserRequest extends Partial<User> {
 }
 
-export interface FetchUserByEmailRequest {
-  email: string;
+export interface FetchUserRequest {
+  email?: string;
+  id?: string;
 }
 
-export interface FetchUsersRequest extends User {
+export interface RecommendUserRequest extends User {
 }
 

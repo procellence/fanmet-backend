@@ -1,11 +1,9 @@
 import { Service } from 'typedi';
 import { LoggerService } from '../../services/logger.service';
 import { CallableRequest } from 'firebase-functions/lib/common/providers/https';
-import { https } from 'firebase-functions/lib/v2';
+import { HttpsError } from 'firebase-functions/v2/https';
 import { TransactionsDao } from '../../dao/transactions.dao';
 import { AddTransactionRequest } from '../../models/requests/transaction-requests';
-
-const HttpsError = https.HttpsError;
 
 @Service()
 export default class AddTransactionFunction {

@@ -2,6 +2,7 @@ import { Service } from 'typedi';
 import { MongoDatabaseService } from '../services/mongo-database.service';
 import { DataObject } from '../utils/generic-types';
 import { Filter, ObjectId, OptionalUnlessRequiredId, WithId } from 'mongodb';
+import { DateTime } from 'luxon';
 
 
 @Service()
@@ -46,7 +47,11 @@ export abstract class BaseDao<T = DataObject> {
   }
 
   async create(data: T): Promise<string> {
-    const response = await this.getCollection().insertOne(data as OptionalUnlessRequiredId<T>);
+    const response = await this.getCollection().insertOne({
+      ...data,
+      createdAt: DateTime.now().toISO(),
+      updatedAt: DateTime.now().toISO(),
+    } as OptionalUnlessRequiredId<T>);
     return response.insertedId.id.toString();
   }
 

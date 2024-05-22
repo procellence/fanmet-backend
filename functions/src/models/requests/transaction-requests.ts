@@ -4,6 +4,6 @@ export interface FetchTransactionsRequest {
   transactionId: string;
 }
 
-export interface AddTransactionRequest extends Omit<Transaction, 'id'> {
+export interface AddTransactionRequest extends Pick<Transaction, 'userId' | 'createdAt' | 'updatedAt' | 'type' | 'amount'> {
 
 }
