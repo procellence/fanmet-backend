@@ -5,7 +5,7 @@ export interface FetchPostsRequest {
   userId?: string;
 }
 
-export interface AddPostRequest extends Pick<Post, 'userId' | 'imageUrl' | 'text' | 'createdAt' | 'updatedAt' | 'likes'> {
+export interface AddPostRequest extends Pick<Post, 'userId' | 'imageUrl' | 'text'> {
 }
 
 export interface DeletePostRequest {

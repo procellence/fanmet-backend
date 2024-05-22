@@ -1,5 +1,6 @@
-export interface User {
-  id?: string;
+import { ModelBase } from '../utils/model-base';
+
+export interface User extends ModelBase {
   firstName: string;
   lastName: string;
   email: string;

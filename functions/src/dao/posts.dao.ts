@@ -8,6 +8,7 @@ export class PostsDao extends BaseDao<Post> {
   collectionName = POSTS_COLLECTION;
 
   async fetchPostByUserId(userId: string): Promise<Post[]> {
-    return this.getCollection().find({ userId }).toArray();
+    const response = await this.getCollection().find({ userId }).toArray();
+    return BaseDao.convertToEntities(response);
   }
 }

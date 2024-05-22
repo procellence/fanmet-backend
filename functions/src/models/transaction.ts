@@ -1,10 +1,9 @@
-export interface Transaction {
-  id?: string;
+import { ModelBase } from '../utils/model-base';
+
+export interface Transaction extends ModelBase {
   userId: string;
-  createdAt: string;
-  updatedAt: string;
   type: TransactionType;
-  amount: number
+  amount: number;
 }
 
 

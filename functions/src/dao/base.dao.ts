@@ -47,10 +47,11 @@ export abstract class BaseDao<T = DataObject> {
   }
 
   async create(data: T): Promise<string> {
+    const currentTimeInIso = DateTime.now().toISO();
     const response = await this.getCollection().insertOne({
       ...data,
-      createdAt: DateTime.now().toISO(),
-      updatedAt: DateTime.now().toISO(),
+      createdAt: currentTimeInIso,
+      updatedAt: currentTimeInIso,
     } as OptionalUnlessRequiredId<T>);
     return response.insertedId.id.toString();
   }
@@ -61,7 +62,10 @@ export abstract class BaseDao<T = DataObject> {
         _id: ObjectId.createFromHexString(id),
       } as Filter<T>,
       {
-        $set: data,
+        $set: {
+          ...data,
+          updatedAt: DateTime.now().toISO(),
+        },
       },
     );
     return response.acknowledged;
