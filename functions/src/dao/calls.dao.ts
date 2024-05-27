@@ -8,8 +8,7 @@ export class CallsDao extends BaseDao<Call> {
   collectionName = CALLS_COLLECTION;
 
   async fetchById(fromUserId: string): Promise<Call[]> {
-    return this.getCollection().find({
-      fromUserId: fromUserId,
-    }).toArray();
+    const response = await this.getCollection().find({ fromUserId }).toArray();
+    return BaseDao.convertToEntities(response);
   }
 }

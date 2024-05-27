@@ -1,6 +1,6 @@
 import { Service } from 'typedi';
 import { https } from 'firebase-functions/v2';
-import { FollowUserRequest } from '../../models/follow-user-request';
+import { FollowUserRequest } from '../../models/requests/follow-user-request';
 import { LoggerService } from '../../services/logger.service';
 import { MongoDatabaseService } from '../../services/mongo-database.service';
 import { FOLLOWERS_COLLECTION, USERS_COLLECTION } from '../../collections';

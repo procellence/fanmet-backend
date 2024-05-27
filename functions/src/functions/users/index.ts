@@ -9,7 +9,7 @@ export const addUser = onCall(
 
 export const updateUser = onCall(
   async (request) => {
-    return loadFn(() => import('./add-user.function'))(request);
+    return loadFn(() => import('./update-user.function'))(request);
   });
 
 export const recommendUsers = onCall(

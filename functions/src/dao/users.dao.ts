@@ -9,7 +9,7 @@ export class UsersDao extends BaseDao<User> {
 
   async getByEmail(email: string): Promise<User> {
     const response = await this.getCollection().findOne({ email: email });
-    return BaseDao.convertToEntity(response);
+    return response ? BaseDao.convertToEntity(response) : null;
   }
 
   async isExistByEmail(email: string): Promise<boolean> {

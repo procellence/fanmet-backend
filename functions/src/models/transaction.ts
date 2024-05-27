@@ -8,8 +8,8 @@ export interface Transaction extends ModelBase {
 
 
 enum TransactionType {
-  DEPOSITED = 'DEPOSITED',
-  WITHDRAWN = 'WITHDRAWN',
-  CALLED = 'CALLED',
-  CALL_RECEIVED = 'CALL_RECEIVED'
+  DEPOSITED = 'deposited',
+  WITHDRAWN = 'withdrawn',
+  CALLED = 'called',
+  CALL_RECEIVED = 'call_received'
 }

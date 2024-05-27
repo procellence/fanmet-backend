@@ -8,6 +8,6 @@ export interface Call extends ModelBase {
 }
 
 enum CallType {
-  AUDIO = 'AUDIO',
-  VIDEO = 'VIDEO'
+  AUDIO = 'audio',
+  VIDEO = 'video'
 }

@@ -1,11 +1,9 @@
 import { Service } from 'typedi';
 import { LoggerService } from '../../services/logger.service';
 import { CallableRequest } from 'firebase-functions/lib/common/providers/https';
-import { https } from 'firebase-functions/lib/v2';
+import { HttpsError } from 'firebase-functions/v2/https';
 import { CallsDao } from '../../dao/calls.dao';
 import { AddCallRequest } from '../../models/requests/call-requests';
-
-const HttpsError = https.HttpsError;
 
 @Service()
 export default class AddCallFunction {
@@ -20,7 +18,7 @@ export default class AddCallFunction {
     const callRequest = req.data;
     this.logger.info('Request received', callRequest);
     await this.validateRequest(callRequest.fromUserId);
-    return this.callsDao.create(callRequest);
+    return this.callsDao.create({ ...callRequest, callDurationTime: 0 });
   }
 
   private async validateRequest(fromUserId: string): Promise<void> {

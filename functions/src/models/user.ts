@@ -19,8 +19,8 @@ export interface User extends ModelBase {
 
 
 enum GENDER_TYPE {
-  MALE = 'MALE',
-  FEMALE = 'FEMALE',
-  TRANSGENDER = 'TRANSGENDER',
-  OTHERS = 'OTHERS'
+  MALE = 'male',
+  FEMALE = 'female',
+  TRANSGENDER = 'transgender',
+  OTHERS = 'others'
 }
