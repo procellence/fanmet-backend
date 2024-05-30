@@ -6,7 +6,7 @@ export const followUser = onCall(
     return loadFn(() => import('./follow-user.function'))(request);
   });
 
-export const followerCheck = onCall(
+export const checkFollower = onCall(
   async (request) => {
-    return loadFn(() => import('./fetch-follow.function'))(request);
+    return loadFn(() => import('./check-follower.function'))(request);
   });

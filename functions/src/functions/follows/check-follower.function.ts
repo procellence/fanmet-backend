@@ -8,7 +8,7 @@ import { Follow } from '../../models/follow';
 
 
 @Service()
-export default class FetchFollowFunction {
+export default class CheckFollowerFunction {
   private readonly logger = LoggerService.getLogger(this);
 
   constructor(
