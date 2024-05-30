@@ -7,8 +7,8 @@ import { Follow } from '../models/follow';
 export class FollowsDao extends BaseDao<Follow> {
   collectionName = FOLLOWERS_COLLECTION;
 
-  // async fetchById(userId: string): Promise<Follow[]> {
-  //   const response = await this.getCollection().find({ userId }).toArray();
-  //   return BaseDao.convertToEntities(response);
-  // }
+  async fetchFollowIdExist(followerId: string, followedId: string): Promise<Follow> {
+    const response = await this.getCollection().findOne({ $and: [{ 'followerId': followerId }, { 'followedId': followedId }] });
+    return response ? BaseDao.convertToEntity(response) : null;
+  }
 }

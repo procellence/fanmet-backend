@@ -13,11 +13,6 @@ export const getAgoraToken = onCall(
     return loadFn(() => import('./functions/agora-token-generator/agora-token-generator.function'))(request);
   });
 
-export const followUser = onCall(
-  async (request) => {
-    return loadFn(() => import('./functions/follow-user/follow-user.function'))(request);
-  });
-
 export const posts = require('./functions/posts');
 
 export const transactions = require('./functions/transactions');
@@ -25,3 +20,5 @@ export const transactions = require('./functions/transactions');
 export const users = require('./functions/users');
 
 export const calls = require('./functions/calls');
+
+export const follows = require('./functions/follows');
