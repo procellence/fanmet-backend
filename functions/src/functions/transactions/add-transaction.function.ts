@@ -17,10 +17,9 @@ export default class AddTransactionFunction {
   async main(req: CallableRequest<AddTransactionRequest>): Promise<string> {
 
     const transactionResponse = req.data;
+
     this.logger.info('Request received', transactionResponse);
-
     this.validateRequest(transactionResponse.userId);
-
     return this.transactionsDao.create(transactionResponse);
   }
 

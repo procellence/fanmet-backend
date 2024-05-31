@@ -7,9 +7,7 @@ import { DateTime } from 'luxon';
 
 @Service()
 export abstract class BaseDao<T = DataObject> {
-
   abstract collectionName: string;
-
   protected db = MongoDatabaseService.getDb();
 
   protected static convertToEntity<T>(item: WithId<T>) {
@@ -53,7 +51,7 @@ export abstract class BaseDao<T = DataObject> {
       createdAt: currentTimeInIso,
       updatedAt: currentTimeInIso,
     } as OptionalUnlessRequiredId<T>);
-    return response.insertedId.id.toString();
+    return response.insertedId.toHexString();
   }
 
   async update(id: string, data: Partial<T>): Promise<boolean> {

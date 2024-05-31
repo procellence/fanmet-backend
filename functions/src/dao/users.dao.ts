@@ -16,5 +16,4 @@ export class UsersDao extends BaseDao<User> {
     const result = await this.getCollection().find({ email: email }).toArray();
     return result.length != 0;
   }
-
 }
