@@ -30,15 +30,15 @@ export default class FollowUserFunction {
 
   private validateRequest(request: FollowUserRequest): void {
     if (!request.followerId) {
-      throw new HttpsError('not-found', 'followerId is required');
+      throw new HttpsError('not-found', 'Follower id is required');
     }
 
     if (!request.followedId) {
-      throw new HttpsError('not-found', 'followedId is required');
+      throw new HttpsError('not-found', 'Followed id is required');
     }
 
     if (request.isFollowing === undefined) {
-      throw new HttpsError('not-found', 'isFollowing is required');
+      throw new HttpsError('not-found', 'Following is required');
     }
   }
 

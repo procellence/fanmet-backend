@@ -27,7 +27,7 @@ export default class CheckFollowerFunction {
   private async validateRequest(request: FollowUserRequest): Promise<void> {
 
     if (!request.followerId && !request.followedId) {
-      throw new HttpsError('not-found', 'follower id and followed  id reused');
+      throw new HttpsError('not-found', 'follower id and followed  id not found');
     }
   }
 }
