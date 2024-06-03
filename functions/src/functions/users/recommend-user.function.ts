@@ -1,9 +1,9 @@
 import { Service } from 'typedi';
 import { LoggerService } from '../../services/logger.service';
-import { CallableRequest } from 'firebase-functions/lib/common/providers/https';
 import { UsersDao } from '../../dao/users.dao';
 import { User } from '../../models/user';
 import { RecommendUserRequest } from '../../models/requests/user-requests';
+import { CallableRequest } from 'firebase-functions/v2/https';
 
 
 @Service()

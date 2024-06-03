@@ -27,14 +27,15 @@ export default class HandleRazorpayPaymentFunction {
     this.logger.debug(`Request received for user ${userEmailId}`, paymentResponse);
 
     const transactionId = paymentResponse.payload.payment.entity.description;
-    const amount = paymentResponse.payload.payment.entity.amount;
+    const amount = paymentResponse.payload.payment.entity.amount / 100;
     const paymentStatus = paymentResponse.payload.payment.entity.status;
 
     switch (paymentStatus) {
       case TransactionStatus.CREATED: {
-        await this.transactionsDao.update(transactionId, { status: PaymentStatus.INPROGRESS });
+        await this.transactionsDao.update(transactionId, { status: PaymentStatus.IN_PROGRESS });
         break;
       }
+      case TransactionStatus.AUTHORIZED:
       case TransactionStatus.CAPTURED: {
         await this.transactionsDao.update(transactionId, { status: PaymentStatus.SUCCESS });
         const transactionResponse = await this.transactionsDao.getById(transactionId);
@@ -43,11 +44,11 @@ export default class HandleRazorpayPaymentFunction {
         await this.usersDao.update(userResponse.id, { balance: finalAmount });
         break;
       }
-      case TransactionStatus.AUTHORIZED: {
-        await this.transactionsDao.update(transactionId, { status: PaymentStatus.INPROGRESS });
-
-        break;
-      }
+      // case TransactionStatus.AUTHORIZED: {
+      //   await this.transactionsDao.update(transactionId, { status: PaymentStatus.IN_PROGRESS });
+      //
+      //   break;
+      // }
       case TransactionStatus.FAILED: {
         await this.transactionsDao.update(transactionId, { status: PaymentStatus.FAILED });
         break;

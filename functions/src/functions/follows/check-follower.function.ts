@@ -1,11 +1,9 @@
 import { Service } from 'typedi';
 import { LoggerService } from '../../services/logger.service';
-import { CallableRequest } from 'firebase-functions/lib/common/providers/https';
-import { HttpsError } from 'firebase-functions/v2/https';
 import { FollowsDao } from '../../dao/follows.dao';
 import { FollowUserRequest } from '../../models/requests/follow-user-request';
 import { Follow } from '../../models/follow';
-
+import { CallableRequest, HttpsError } from 'firebase-functions/v2/https';
 
 @Service()
 export default class CheckFollowerFunction {

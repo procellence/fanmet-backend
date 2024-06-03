@@ -1,9 +1,8 @@
 import { Service } from 'typedi';
 import { LoggerService } from '../../services/logger.service';
-import { CallableRequest } from 'firebase-functions/lib/common/providers/https';
 import { AddPostRequest } from '../../models/requests/post-requests';
-import { HttpsError } from 'firebase-functions/v2/https';
 import { PostsDao } from '../../dao/posts.dao';
+import { CallableRequest, HttpsError } from 'firebase-functions/v2/https';
 
 @Service()
 export default class AddPostFunction {

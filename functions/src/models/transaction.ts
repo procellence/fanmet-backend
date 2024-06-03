@@ -73,9 +73,8 @@ export enum TransactionStatus {
 }
 
 export enum PaymentStatus {
-  INPROGRESS = 'inprogress',
+  IN_PROGRESS = 'in-progress',
   SUCCESS = 'success',
-  INITIALIZE = 'initialize',
+  INITIATED = 'initiated',
   FAILED = 'failed',
-
 }

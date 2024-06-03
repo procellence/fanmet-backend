@@ -9,4 +9,4 @@ require('tsconfig-paths').register({
   paths: tsConfig.compilerOptions.paths,
 });
 
-Settings.defaultZone = 'America/New_York';
+Settings.defaultZone = 'Asia/Kolkata';

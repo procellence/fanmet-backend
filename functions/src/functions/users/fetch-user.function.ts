@@ -1,11 +1,9 @@
 import { Service } from 'typedi';
 import { LoggerService } from '../../services/logger.service';
-import { CallableRequest } from 'firebase-functions/lib/common/providers/https';
-import { HttpsError } from 'firebase-functions/v2/https';
 import { UsersDao } from '../../dao/users.dao';
 import { User } from '../../models/user';
 import { FetchUserRequest } from '../../models/requests/user-requests';
-
+import { CallableRequest, HttpsError } from 'firebase-functions/v2/https';
 
 @Service()
 export default class FetchUserFunction {

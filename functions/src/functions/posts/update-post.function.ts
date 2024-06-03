@@ -1,11 +1,9 @@
 import { Service } from 'typedi';
 import { LoggerService } from '../../services/logger.service';
-import { CallableRequest } from 'firebase-functions/lib/common/providers/https';
-import { https } from 'firebase-functions/lib/v2';
 import { PostsDao } from '../../dao/posts.dao';
 import { UpdatePostRequest } from '../../models/requests/post-requests';
+import { CallableRequest, HttpsError } from 'firebase-functions/v2/https';
 
-const HttpsError = https.HttpsError;
 
 @Service()
 export default class UpdatePostFunction {

@@ -1,14 +1,11 @@
 import { Service } from 'typedi';
-import { https } from 'firebase-functions/v2';
 import { FollowUserRequest } from '../../models/requests/follow-user-request';
 import { LoggerService } from '../../services/logger.service';
 import { MongoDatabaseService } from '../../services/mongo-database.service';
 import { FOLLOWERS_COLLECTION, USERS_COLLECTION } from '../../collections';
 import { ObjectId } from 'mongodb';
-import { CallableRequest } from 'firebase-functions/lib/common/providers/https';
 import { MONGODB_DB_NAME } from '../../constants';
-
-const HttpsError = https.HttpsError;
+import { CallableRequest, HttpsError } from 'firebase-functions/v2/https';
 
 
 @Service()

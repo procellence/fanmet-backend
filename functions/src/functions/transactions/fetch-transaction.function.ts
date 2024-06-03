@@ -1,10 +1,9 @@
 import { Service } from 'typedi';
 import { LoggerService } from '../../services/logger.service';
-import { CallableRequest } from 'firebase-functions/lib/common/providers/https';
-import { HttpsError } from 'firebase-functions/v2/https';
 import { TransactionsDao } from '../../dao/transactions.dao';
 import { FetchTransactionsRequest } from '../../models/requests/transaction-requests';
 import { Transaction } from '../../models/transaction';
+import { CallableRequest, HttpsError } from 'firebase-functions/v2/https';
 
 @Service()
 export default class FetchTransactionFunction {
