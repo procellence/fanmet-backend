@@ -20,7 +20,7 @@ export default class FetchTransactionFunction {
 
     this.validateRequest(req.data);
 
-    return this.transactionsDao.fetchById(req.data.transactionId);
+    return this.transactionsDao.fetchByUserId(req.data.transactionId);
   }
 
   private validateRequest(request: FetchTransactionsRequest): void {

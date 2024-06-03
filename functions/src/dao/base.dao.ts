@@ -9,6 +9,7 @@ import { DateTime } from 'luxon';
 export abstract class BaseDao<T = DataObject> {
   abstract collectionName: string;
   protected db = MongoDatabaseService.getDb();
+  protected dataMappingStages: any[] = [];
 
   protected static convertToEntity<T>(item: WithId<T>) {
     const id = item._id.toHexString();
@@ -33,6 +34,20 @@ export abstract class BaseDao<T = DataObject> {
   }
 
   async getById(id: string): Promise<T> {
+
+    if (this.dataMappingStages.length > 0) {
+      const response = await this.getCollection().aggregate([
+        {
+          $match: {
+            _id: ObjectId.createFromHexString(id),
+          },
+        },
+        ...this.dataMappingStages,
+      ]).toArray();
+
+      return response.length > 0 ? response as T : null;
+    }
+
     const response = await this.getCollection().findOne({
       _id: ObjectId.createFromHexString(id),
     } as Filter<T>);
@@ -40,6 +55,14 @@ export abstract class BaseDao<T = DataObject> {
   }
 
   async getAll(): Promise<T[]> {
+
+    if (this.dataMappingStages.length > 0) {
+      const response = await this.getCollection().aggregate([
+        ...this.dataMappingStages,
+      ]).toArray();
+      return response as T[];
+    }
+    
     const response = await this.getCollection().find().toArray();
     return BaseDao.convertToEntities(response);
   }

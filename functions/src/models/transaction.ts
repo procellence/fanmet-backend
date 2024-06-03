@@ -1,10 +1,12 @@
 import { ModelBase } from '../utils/model-base';
+import { User } from './user';
 
 export interface Transaction extends ModelBase {
   userId: string;
   type: TransactionType;
   amount: number;
   status: PaymentStatus
+  user?: User;
 }
 
 export interface PaymentResponse {

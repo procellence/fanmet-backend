@@ -18,7 +18,9 @@ export default class FetchCallFunction {
     const callRequest = req.data;
     this.logger.info('Request received', callRequest);
     await this.validateRequest(callRequest.fromUserId);
-    return this.callsDao.fetchById(callRequest.fromUserId);
+    const data = await this.callsDao.fetchByFromUserId(callRequest.fromUserId);
+    this.logger.info('Response', data);
+    return data;
   }
 
   private async validateRequest(fromUserId: string): Promise<void> {

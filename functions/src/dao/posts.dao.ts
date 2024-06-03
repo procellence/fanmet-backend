@@ -6,9 +6,36 @@ import { Post } from '../models/post';
 @Service()
 export class PostsDao extends BaseDao<Post> {
   collectionName = POSTS_COLLECTION;
+  dataMappingStages = [
+    {
+      $addFields: {
+        'userObjectId': { $toObjectId: '$userId' },
+      },
+    },
+    {
+      $lookup: {
+        from: 'users',
+        localField: 'userObjectId',
+        foreignField: '_id',
+        as: 'user',
+      },
+    },
+    {
+      $unwind: '$user',
+    },
+  ];
 
   async fetchPostByUserId(userId: string): Promise<Post[]> {
-    const response = await this.getCollection().find({ userId }).toArray();
-    return BaseDao.convertToEntities(response);
+    const response = await this.getCollection()
+      .aggregate([
+        {
+          $match: {
+            userId,
+          },
+        },
+        ...this.dataMappingStages,
+      ]).toArray();
+
+    return response as Post[];
   }
 }

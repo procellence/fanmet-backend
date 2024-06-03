@@ -6,9 +6,36 @@ import { Transaction } from '../models/transaction';
 @Service()
 export class TransactionsDao extends BaseDao<Transaction> {
   collectionName = TRANSACTIONS_COLLECTION;
+  dataMappingStages = [
+    {
+      $addFields: {
+        'userObjectId': { $toObjectId: '$userId' },
+      },
+    },
+    {
+      $lookup: {
+        from: 'users',
+        localField: 'userObjectId',
+        foreignField: '_id',
+        as: 'user',
+      },
+    },
+    {
+      $unwind: '$user',
+    },
+  ];
 
-  async fetchById(userId: string): Promise<Transaction[]> {
-    const response = await this.getCollection().find({ userId }).toArray();
-    return BaseDao.convertToEntities(response);
+  async fetchByUserId(userId: string): Promise<Transaction[]> {
+    const response = await this.getCollection()
+      .aggregate([
+        {
+          $match: {
+            userId,
+          },
+        },
+        ...this.dataMappingStages,
+      ]).toArray();
+
+    return response as Transaction[];
   }
 }
