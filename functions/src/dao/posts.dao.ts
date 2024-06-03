@@ -10,6 +10,7 @@ export class PostsDao extends BaseDao<Post> {
     {
       $addFields: {
         'userObjectId': { $toObjectId: '$userId' },
+        'id': '$_id',
       },
     },
     {

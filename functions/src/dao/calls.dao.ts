@@ -11,6 +11,7 @@ export class CallsDao extends BaseDao<Call> {
       $addFields: {
         'fromUserObjectId': { $toObjectId: '$fromUserId' },
         'toUserObjectId': { $toObjectId: '$toUserId' },
+        'id': '$_id',
       },
     },
     {

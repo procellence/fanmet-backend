@@ -10,6 +10,7 @@ export class TransactionsDao extends BaseDao<Transaction> {
     {
       $addFields: {
         'userObjectId': { $toObjectId: '$userId' },
+        'id': '$_id',
       },
     },
     {
