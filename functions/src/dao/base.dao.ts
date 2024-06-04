@@ -3,6 +3,8 @@ import { MongoDatabaseService } from '../services/mongo-database.service';
 import { DataObject } from '../utils/generic-types';
 import { Filter, ObjectId, OptionalUnlessRequiredId, WithId } from 'mongodb';
 import { DateTime } from 'luxon';
+import { Document } from 'bson/src/bson';
+import { isArray } from 'lodash';
 
 
 @Service()
@@ -11,9 +13,20 @@ export abstract class BaseDao<T = DataObject> {
   protected db = MongoDatabaseService.getDb();
   protected dataMappingStages: any[] = [];
 
-  protected static convertToEntity<T>(item: WithId<T>) {
+  protected static convertToEntity<T>(item: WithId<T> | Document) {
+    if (!item._id) {
+      return item as T;
+    }
     const id = item._id.toHexString();
     delete item._id;
+
+    // check if any property is an object and then apply the same logic to it
+    Object.keys(item).forEach((key) => {
+      if ((item as any)[key] && typeof (item as any)[key] === 'object' && !isArray((item as any)[key])) {
+        (item as any)[key] = BaseDao.convertToEntity((item as any)[key]);
+      }
+    });
+
     return {
       ...item,
       id,
@@ -45,7 +58,7 @@ export abstract class BaseDao<T = DataObject> {
         ...this.dataMappingStages,
       ]).toArray();
 
-      return response.length > 0 ? response as T : null;
+      return response.length > 0 ? BaseDao.convertToEntity(response as T) : null;
     }
 
     const response = await this.getCollection().findOne({
@@ -60,9 +73,9 @@ export abstract class BaseDao<T = DataObject> {
       const response = await this.getCollection().aggregate([
         ...this.dataMappingStages,
       ]).toArray();
-      return response as T[];
+      return (response as T[]).map(BaseDao.convertToEntity);
     }
-    
+
     const response = await this.getCollection().find().toArray();
     return BaseDao.convertToEntities(response);
   }

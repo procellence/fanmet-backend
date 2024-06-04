@@ -37,6 +37,6 @@ export class PostsDao extends BaseDao<Post> {
         ...this.dataMappingStages,
       ]).toArray();
 
-    return response as Post[];
+    return (response as Post[]).map(BaseDao.convertToEntity);
   }
 }

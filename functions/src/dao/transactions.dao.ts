@@ -37,6 +37,6 @@ export class TransactionsDao extends BaseDao<Transaction> {
         ...this.dataMappingStages,
       ]).toArray();
 
-    return response as Transaction[];
+    return (response as Transaction[]).map(BaseDao.convertToEntity);
   }
 }

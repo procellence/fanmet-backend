@@ -49,6 +49,6 @@ export class CallsDao extends BaseDao<Call> {
         ...this.dataMappingStages,
       ]).toArray();
 
-    return response as Call[];
+    return (response as Call[]).map(BaseDao.convertToEntity);
   }
 }
