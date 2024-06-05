@@ -39,4 +39,16 @@ export class PostsDao extends BaseDao<Post> {
 
     return (response as Post[]).map(BaseDao.convertToEntity);
   }
+
+  async fetchPosts(): Promise<Post[]> {
+    const response = await this.getCollection()
+      .aggregate([
+        {
+          $match: {},
+        },
+        ...this.dataMappingStages,
+      ]).toArray();
+
+    return (response as Post[]).map(BaseDao.convertToEntity);
+  }
 }

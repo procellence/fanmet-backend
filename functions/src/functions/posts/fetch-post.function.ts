@@ -24,7 +24,8 @@ export default class FetchPostFunction {
       return this.postsDao.fetchPostByUserId(postsRequest.userId);
 
     }
-    return this.postsDao.getAll();
+    return this.postsDao.fetchPosts();
+
   }
 
   private validateRequest(request: FetchPostsRequest): void {
