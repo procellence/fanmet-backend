@@ -1,7 +1,7 @@
 import { Service } from 'typedi';
 import { PhotoUploadRequest, PhotoUploadSchema } from '../../schema/photo-upload-schema';
 import { DefaultApiHandler } from '../default-api-handler';
-import { https } from 'firebase-functions/lib/v2';
+import { Request } from 'firebase-functions/v2/https';
 import { Response } from 'express';
 // import { Readable } from 'stream';
 // import { MultipartFormParser } from '../../services/multipart-form-parser';
@@ -22,7 +22,7 @@ export default class ProfilePhotoUploadFunction extends DefaultApiHandler<PhotoU
     super();
   }
 
-  async main(req: https.Request, res: Response) {
+  async main(req: Request, res: Response) {
     try {
       this.logger.log('ProfilePhotoUploadFunction');
       return true;

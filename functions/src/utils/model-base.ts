@@ -3,9 +3,7 @@ import { DateTime } from 'luxon';
 export interface ModelBase<K = string> {
   id?: K;
   createdAt?: string;
-  createdBy?: string;
   updatedAt?: string;
-  updatedBy?: string;
 }
 
 export const modelBaseFields: string[] = ['id', 'createdAt', 'createdBy', 'updatedAt', 'updatedBy'];
@@ -27,12 +25,12 @@ export function copyModel<T extends ModelBase>(source: T, params: {
   if (params.isUpdate || params.isCreate) {
     target.updatedAt = DateTime.now().toISO();
     if (params.author) {
-      target.updatedBy = params.author;
+      // target.updatedBy = params.author;
     }
     if (params.isCreate) {
       target.createdAt = target.updatedAt;
       if (params.author) {
-        target.createdBy = params.author;
+        // target.createdBy = params.author;
       }
     }
   }

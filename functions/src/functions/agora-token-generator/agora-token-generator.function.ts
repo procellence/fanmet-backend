@@ -1,12 +1,9 @@
 import { RtcRole, RtcTokenBuilder } from 'agora-token';
-import { https } from 'firebase-functions/v2';
 import { Service } from 'typedi';
 import { APP_CERTIFICATE, APP_ID } from '../../constants';
 import { AgoraRtcRole, AgoraTokenRequest } from '../../models/agora';
-import { CallableRequest } from 'firebase-functions/lib/common/providers/https';
 import { LoggerService } from '../../services/logger.service';
-
-const HttpsError = https.HttpsError;
+import { CallableRequest, HttpsError } from 'firebase-functions/v2/https';
 
 @Service()
 export default class AgoraTokenGeneratorFunction {
