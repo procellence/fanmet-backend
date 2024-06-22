@@ -1,8 +1,9 @@
 import { DataObject } from '../utils/generic-types';
+import { User } from './user';
 
 export interface FcmNotificationRequest {
-  userId: string;
-  body: string;
+  toUserId: string;
+  fromUser: User;
   agoraTokenId: string;
   type: CallType;
   data?: DataObject;

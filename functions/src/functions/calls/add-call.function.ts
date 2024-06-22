@@ -3,6 +3,7 @@ import { LoggerService } from '../../services/logger.service';
 import { CallsDao } from '../../dao/calls.dao';
 import { AddCallRequest } from '../../models/requests/call-requests';
 import { CallableRequest, HttpsError } from 'firebase-functions/v2/https';
+import { CallRequestType } from '../../models/call';
 
 @Service()
 export default class AddCallFunction {
@@ -17,7 +18,7 @@ export default class AddCallFunction {
     const callRequest = req.data;
     this.logger.info('Request received', callRequest);
     await this.validateRequest(callRequest.fromUserId);
-    return this.callsDao.create({ ...callRequest, callDurationTime: 0 });
+    return this.callsDao.create({ ...callRequest, callDurationTime: 0, requestType: CallRequestType.OUTGOING });
   }
 
   private async validateRequest(fromUserId: string): Promise<void> {

@@ -6,6 +6,9 @@ import admin from 'firebase-admin';
 import { Message } from 'firebase-admin/lib/messaging/messaging-api';
 import { CallableRequest } from 'firebase-functions/v2/https';
 import { UsersDao } from '../../dao/users.dao';
+import { capitalize } from 'lodash';
+import { CallsDao } from '../../dao/calls.dao';
+import { CallRequestType } from '../../models/call';
 
 const HttpsError = https.HttpsError;
 
@@ -24,6 +27,7 @@ export default class SendFcmNotificationFunction {
 
   constructor(
     private usersDao: UsersDao,
+    private callsDao: CallsDao,
   ) {
   }
 
@@ -43,21 +47,41 @@ export default class SendFcmNotificationFunction {
       throw new HttpsError('not-found', 'FCM Token is required');
     }
 
-    if (!request.body) {
-      throw new HttpsError('not-found', 'Body is required');
+    if (!request.fromUser) {
+      throw new HttpsError('not-found', 'From user is required');
+    }
+
+    if (!request.toUserId) {
+      throw new HttpsError('not-found', 'To user id is required');
     }
   }
 
   private async sendNotification(request: FcmNotificationRequest): Promise<void> {
 
-    const userDetail = await this.usersDao.getById(request.userId);
+    const userDetail = await this.usersDao.getById(request.toUserId);
 
-    const dataSend = { 'agoraToken': request.agoraTokenId, 'type': request.type };
+    // log call activity for this user.
+    await this.callsDao.create({
+      fromUserId: request.fromUser.id,
+      toUserId: request.toUserId,
+      type: request.type,
+      requestType: CallRequestType.INCOMING,
+      callDurationTime: 0,
+    });
+
+    const dataSend = {
+      'agoraToken': request.agoraTokenId,
+      'type': request.type,
+      'fromUserProfileUrl': request.fromUser.pictureUrl,
+    };
+
+    // get from user full name.
+    const fromUserFullName = `${request.fromUser.firstName} ${request.fromUser.lastName}`;
 
     const payload: Message = {
       notification: {
-        title: userDetail.firstName + ' ' + userDetail.lastName + '.' + 'fanmet',
-        body: request.body,
+        title: fromUserFullName,
+        body: `${capitalize(request.type)} call`,
       },
       token: userDetail.fcmTokenId,
       data: dataSend,
