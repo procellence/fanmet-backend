@@ -4,8 +4,8 @@ import { https } from 'firebase-functions/v2';
 import { FcmNotificationRequest } from '../../models/fcm-notification-request';
 import admin from 'firebase-admin';
 import { Message } from 'firebase-admin/lib/messaging/messaging-api';
-import { Request } from 'firebase-functions/v2/https';
-import { Response } from 'express';
+import { CallableRequest } from 'firebase-functions/v2/https';
+import { UsersDao } from '../../dao/users.dao';
 
 const HttpsError = https.HttpsError;
 
@@ -22,28 +22,25 @@ export default class SendFcmNotificationFunction {
 
   private readonly logger = LoggerService.getLogger(this);
 
-  async main(req: Request, res: Response) {
+  constructor(
+    private usersDao: UsersDao,
+  ) {
+  }
 
-    const fcmNotificationRequest = req.body as FcmNotificationRequest;
-
+  async main(req: CallableRequest<FcmNotificationRequest>): Promise<boolean> {
+    const fcmNotificationRequest = req.data;
     this.logger.info('Request received', fcmNotificationRequest);
 
     this.validateRequest(fcmNotificationRequest);
 
     await this.sendNotification(fcmNotificationRequest);
-
-    res.status(200).send('FCM Notification sent successfully');
-
+    return true;
   }
 
   private validateRequest(request: FcmNotificationRequest): void {
     // TODO: (akshoy) Use ZOD for validation.
-    if (!request.fcmTokenId) {
+    if (!request.agoraTokenId) {
       throw new HttpsError('not-found', 'FCM Token is required');
-    }
-
-    if (!request.title) {
-      throw new HttpsError('not-found', 'Title is required');
     }
 
     if (!request.body) {
@@ -53,13 +50,17 @@ export default class SendFcmNotificationFunction {
 
   private async sendNotification(request: FcmNotificationRequest): Promise<void> {
 
+    const userDetail = await this.usersDao.getById(request.userId);
+
+    const dataSend = { 'agoraToken': request.agoraTokenId, 'type': request.type };
+
     const payload: Message = {
       notification: {
-        title: request.title,
+        title: userDetail.firstName + ' ' + userDetail.lastName + '.' + 'fanmet',
         body: request.body,
       },
-      token: request.fcmTokenId,
-      // data: JSON.stringify(request.data),
+      token: userDetail.fcmTokenId,
+      data: dataSend,
       android: {
         notification: {
           sound: 'default',
