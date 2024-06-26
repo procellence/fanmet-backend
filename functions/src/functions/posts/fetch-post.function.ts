@@ -24,7 +24,8 @@ export default class FetchPostFunction {
       return this.postsDao.fetchPostByUserId(postsRequest.userId);
 
     }
-    return this.postsDao.fetchPosts();
+    const result = await this.postsDao.fetchPosts();
+    return result.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
   }
 

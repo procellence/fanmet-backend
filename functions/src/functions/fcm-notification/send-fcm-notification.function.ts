@@ -8,7 +8,6 @@ import { CallableRequest } from 'firebase-functions/v2/https';
 import { UsersDao } from '../../dao/users.dao';
 import { capitalize } from 'lodash';
 import { CallsDao } from '../../dao/calls.dao';
-import { CallRequestType } from '../../models/call';
 
 const HttpsError = https.HttpsError;
 
@@ -65,7 +64,6 @@ export default class SendFcmNotificationFunction {
       fromUserId: request.fromUser.id,
       toUserId: request.toUserId,
       type: request.type,
-      requestType: CallRequestType.INCOMING,
       callDurationTime: 0,
     });
 

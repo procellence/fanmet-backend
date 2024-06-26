@@ -1,9 +1,9 @@
-import { Service } from 'typedi';
-import { LoggerService } from '../../services/logger.service';
-import { TransactionsDao } from '../../dao/transactions.dao';
-import { FetchTransactionsRequest } from '../../models/requests/transaction-requests';
-import { Transaction } from '../../models/transaction';
-import { CallableRequest, HttpsError } from 'firebase-functions/v2/https';
+import {Service} from 'typedi';
+import {LoggerService} from '../../services/logger.service';
+import {TransactionsDao} from '../../dao/transactions.dao';
+import {FetchTransactionsRequest} from '../../models/requests/transaction-requests';
+import {Transaction} from '../../models/transaction';
+import {CallableRequest, HttpsError} from 'firebase-functions/v2/https';
 
 @Service()
 export default class FetchTransactionFunction {
@@ -20,7 +20,8 @@ export default class FetchTransactionFunction {
 
     this.validateRequest(req.data);
 
-    return this.transactionsDao.fetchByUserId(req.data.transactionId);
+    const result = await this.transactionsDao.fetchByUserId(req.data.transactionId);
+    return result.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
   }
 
   private validateRequest(request: FetchTransactionsRequest): void {

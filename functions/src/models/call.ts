@@ -3,7 +3,7 @@ import { User } from './user';
 
 export interface Call extends ModelBase {
   type: CallType;
-  requestType: CallRequestType;
+  requestType?: CallRequestType;
   fromUserId: string;
   toUserId: string;
   callDurationTime: number;

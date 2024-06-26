@@ -3,7 +3,7 @@ import { User } from './user';
 
 export interface FcmNotificationRequest {
   toUserId: string;
-  fromUser: User;
+  fromUser?: User;
   agoraTokenId: string;
   type: CallType;
   data?: DataObject;
