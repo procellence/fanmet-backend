@@ -8,6 +8,8 @@ import { CallableRequest } from 'firebase-functions/v2/https';
 import { UsersDao } from '../../dao/users.dao';
 import { capitalize } from 'lodash';
 import { CallsDao } from '../../dao/calls.dao';
+import { FcmPayload } from '../../models/fcm-data-send';
+import { DataObject } from '../../utils/generic-types';
 
 const HttpsError = https.HttpsError;
 
@@ -67,17 +69,17 @@ export default class SendFcmNotificationFunction {
       callDurationTime: 0,
     });
 
-    // const dataSend: DataSend = {
-    //   agoraToken: request.agoraTokenId,
-    //   type: request.type,
-    //   fromUserProfileUrl: request.fromUser.pictureUrl,
-    // };
-
-    const dataSend = {
-      'agoraToken': request.agoraTokenId,
-      'type': request.type,
-      'fromUserProfileUrl': request.fromUser.pictureUrl,
+    const dataSend: FcmPayload = {
+      agoraToken: request.agoraTokenId,
+      type: request.type,
+      fromUserProfileUrl: request.fromUser.pictureUrl,
     };
+
+    // const dataSend = {
+    //   'agoraToken': request.agoraTokenId,
+    //   'type': request.type,
+    //   'fromUserProfileUrl': request.fromUser.pictureUrl,
+    // };
 
     // get from user full name.
     const fromUserFullName = `${request.fromUser.firstName} ${request.fromUser.lastName}`;
@@ -88,7 +90,7 @@ export default class SendFcmNotificationFunction {
         body: `${capitalize(request.type)} call`,
       },
       token: userDetail.fcmTokenId,
-      data: dataSend,
+      data: dataSend as DataObject,
       android: {
         notification: {
           sound: 'default',
