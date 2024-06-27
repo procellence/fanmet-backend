@@ -20,7 +20,7 @@ export default class FetchCallFunction {
     this.logger.info('Request received', callRequest);
     await this.validateRequest(callRequest.fromUserId);
     const data = await this.callsDao.fetchByFromUserId(callRequest.fromUserId);
-    return data.sort(sortDate());
+    return data.sort(sortDate);
 
   }
 
