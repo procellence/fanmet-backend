@@ -23,10 +23,6 @@ export const calls = require('./functions/calls');
 
 export const follows = require('./functions/follows');
 
-// export const sendFcmNotification = onRequest(async (req, res) => {
-//   return loadFn(() => import('./functions/fcm-notification/send-fcm-notification.function'))(req, res);
-// });
-
 export const sendFcmNotification = onCall(
   async (request) => {
     return loadFn(() => import('./functions/fcm-notification/send-fcm-notification.function'))(request);

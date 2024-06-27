@@ -4,6 +4,7 @@ import { validate, ValidationError } from 'class-validator';
 import { ClassConstructor } from 'class-transformer/types/interfaces';
 import { Stream } from 'stream';
 import { ValidationExtendError } from './errors';
+import { Item } from '../models/item';
 
 export function objectDiff(object: { [key: string]: any }, base: { [key: string]: any }): { [key: string]: any } {
   return transform(object, (result, value, key) => {
@@ -154,4 +155,8 @@ export async function streamToBuffer(stream: Stream): Promise<Buffer> {
     stream.on('end', () => resolve(Buffer.concat(buf)));
     stream.on('error', (err) => reject(`error converting stream - ${err}`));
   });
+}
+
+export function sortDate(a: Item, b: Item): number {
+  return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
 }

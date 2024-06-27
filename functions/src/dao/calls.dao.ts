@@ -51,9 +51,9 @@ export class CallsDao extends BaseDao<Call> {
       ]).toArray();
 
     return (response as Call[]).map(BaseDao.convertToEntity).map(call => {
-      return call.fromUserId == userId ? { ...call, requestType: CallRequestType.OUTGOING } : {
+      return {
         ...call,
-        requestType: CallRequestType.INCOMING,
+        requestType: call.requestType == userId ? CallRequestType.OUTGOING : CallRequestType.INCOMING,
       };
     });
   }

@@ -4,6 +4,7 @@ import { CallsDao } from '../../dao/calls.dao';
 import { FetchCallsRequest } from '../../models/requests/call-requests';
 import { Call } from '../../models/call';
 import { CallableRequest, HttpsError } from 'firebase-functions/v2/https';
+import { sortDate } from '../../utils/utils';
 
 @Service()
 export default class FetchCallFunction {
@@ -19,7 +20,8 @@ export default class FetchCallFunction {
     this.logger.info('Request received', callRequest);
     await this.validateRequest(callRequest.fromUserId);
     const data = await this.callsDao.fetchByFromUserId(callRequest.fromUserId);
-    return data.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    return data.sort(sortDate());
+
   }
 
   private async validateRequest(fromUserId: string): Promise<void> {

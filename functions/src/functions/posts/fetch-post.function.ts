@@ -25,6 +25,7 @@ export default class FetchPostFunction {
 
     }
     const result = await this.postsDao.fetchPosts();
+    // return result.sort(sortDate(post, post));
     return result.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
   }

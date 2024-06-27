@@ -67,6 +67,12 @@ export default class SendFcmNotificationFunction {
       callDurationTime: 0,
     });
 
+    // const dataSend: DataSend = {
+    //   agoraToken: request.agoraTokenId,
+    //   type: request.type,
+    //   fromUserProfileUrl: request.fromUser.pictureUrl,
+    // };
+
     const dataSend = {
       'agoraToken': request.agoraTokenId,
       'type': request.type,
@@ -86,11 +92,9 @@ export default class SendFcmNotificationFunction {
       android: {
         notification: {
           sound: 'default',
-          channelId: '564654644',
         },
       },
     };
-    this.logger.info('project id', FIREBASE_PROJECT_ID);
 
     const app = admin.app();
     const messaging = admin.messaging(app);
