@@ -22,3 +22,8 @@ export const users = require('./functions/users');
 export const calls = require('./functions/calls');
 
 export const follows = require('./functions/follows');
+
+export const sendFcmNotification = onCall(
+  async (request) => {
+    return loadFn(() => import('./functions/fcm-notification/send-fcm-notification.function'))(request);
+  });

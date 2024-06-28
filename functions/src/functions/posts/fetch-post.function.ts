@@ -4,6 +4,7 @@ import { FetchPostsRequest } from '../../models/requests/post-requests';
 import { CallableRequest, HttpsError } from 'firebase-functions/v2/https';
 import { PostsDao } from '../../dao/posts.dao';
 import { Post } from '../../models/post';
+import { sortDate } from '../../utils/utils';
 
 
 @Service()
@@ -24,7 +25,8 @@ export default class FetchPostFunction {
       return this.postsDao.fetchPostByUserId(postsRequest.userId);
 
     }
-    return this.postsDao.fetchPosts();
+    const result = await this.postsDao.fetchPosts();
+    return result.sort(sortDate);
 
   }
 
