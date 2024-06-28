@@ -75,12 +75,6 @@ export default class SendFcmNotificationFunction {
       fromUserProfileUrl: request.fromUser.pictureUrl,
     };
 
-    // const dataSend = {
-    //   'agoraToken': request.agoraTokenId,
-    //   'type': request.type,
-    //   'fromUserProfileUrl': request.fromUser.pictureUrl,
-    // };
-
     // get from user full name.
     const fromUserFullName = `${request.fromUser.firstName} ${request.fromUser.lastName}`;
 
